@@ -131,10 +131,10 @@ class Optimizer:
         self.momentum = momentum
         self.network = network
 
-        self.w_h_v = 0
-        self.b_h_v = 0
-        self.w_o_v = 0
-        self.b_o_v = 0
+        self.w_h_v = np.full_like(network.w_h, 1e-5)
+        self.b_h_v = np.full_like(network.b_h, 1e-5)
+        self.w_o_v = np.full_like(network.w_o, 1e-5)
+        self.b_o_v = np.full_like(network.b_o, 1e-5)
 
     def step(self):
         self.w_h_v = self.momentum * self.w_h_v + self.lr * self.network.w_h_grad

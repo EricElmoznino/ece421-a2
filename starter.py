@@ -63,6 +63,12 @@ def average_ce(target, prediction):
     return -ce.mean()
 
 
+def accuracy(target, prediction):
+    target = target.argmax(axis=1)
+    prediction = prediction.argmax(axis=1)
+    return (target == prediction).sum() / len(target)
+
+
 def grad_ce(target, prediction):
     return 1 / len(target) * (prediction - target)
 

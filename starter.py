@@ -94,6 +94,7 @@ class Network:
         self.b_o = init_biases(10)
 
         self.w_h_grad = None
+        self.
 
     def forward(self, input):
         h = np.dot(input, self.w_h) + self.b_h
@@ -105,9 +106,6 @@ class Network:
 class Optimizer:
 
     def __init__(self, lr, momentum, network):
-        pass
-
-    def zero_grad(self):
         pass
 
     def step(self):

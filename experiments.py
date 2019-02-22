@@ -11,33 +11,36 @@ class Part1(unittest.TestCase):
 
     def setUp(self):
         self.train_x, self.val_x, self.test_x, self.train_y, self.val_y, self.test_y = load_data()
-        self.train_y, self.val_y, self.text_y = convert_one_hot(self.train_y, self.val_y, self.test_y)
+        self.train_y, self.val_y, self.test_y = convert_one_hot(self.train_y, self.val_y, self.test_y)
 
     def test_3(self):
-        metrics = {'Training loss': [], 'Validation loss': [], 'Test loss': [],
+        metric = {'Training loss': [], 'Validation loss': [], 'Test loss': [],
                     'Training accuracy': [], 'Validation accuracy': [], 'Test accuracy': []}
         epochs = 200
         save_freq = 100
-        for metric in zip(metrics):
-            Network.__init__(1000)
-            for _ in tqdm(range(0, epochs + 1,)):
-                metric['Training loss'].append(average_ce(self.train_y, self.train_x,))
-                metric['Validation loss'].append(average_ce(self.val_y, self.val_x))
-                metric['Test loss'].append(average_ce(w, b, self.test_y, self.test_x))
-                metric['Training accuracy'].append(average_ce(self.train_y, self.train_x))
-                metric['Validation accuracy'].append(average_ce(self.val_y, self.val_x))
-                metric['Test accuracy'].append(average_ce( self.test_y, self.test_x))
-                w, b = grad_ce(w, b, self.train_x, self.train_y, alpha, save_freq, 0.0, 1e-7, 'MSE')
-        for title in metrics[0]:
+        net = Network(1000)
+        opt = Optimizer(0.1, 0.9, net)
+        for _ in tqdm(range(0, epochs + 1)):
+            train_p = net.forward(self.train_x)
+            net.backward(self.train_y, train_p)
+            opt.step()
+            val_p = net.forward(self.val_x)
+            test_p = net.forward(self.test_x)
+            metric['Training loss'].append(average_ce(self.train_y, train_p))
+            metric['Validation loss'].append(average_ce(self.val_y, val_p))
+            metric['Test loss'].append(average_ce(self.test_y, test_p))
+            metric['Training accuracy'].append(accuracy(self.train_y, train_p))
+            metric['Validation accuracy'].append(accuracy(self.val_y, val_p))
+            metric['Test accuracy'].append(accuracy(self.test_y, test_p))
+        for title in metric:
             line_plot(title, list(range(0, epochs + 1, save_freq)),
-                      [m[title] for m in metrics], ['learning rate = %g' % a for a in alphas],
+                      title, 'learning rate = 0.1',
                       'epochs', title.split(' ')[1],
                       os.path.join('results', '1_3', title + '.png'))
-        for a, m in zip(alphas, metrics):
-            with open(os.path.join('results', '1_3', 'final_metrics_alpha=%g.txt' % a), 'w') as f:
-                for title in m:
-                    f.write('%s: %g\n' % (title, m[title][-1]))
-
+        with open(os.path.join('results', '1_3', 'final_metrics_alpha=%g.txt' % 0.1), 'w') as f:
+            for title in metric:
+                f.write('%s: %g\n' % (title, metric[title][-1]))
+'''
     def test_4(self):
         regs = [0.001, 0.1, 0.5]
         metrics = [{'Training loss': [], 'Validation loss': [], 'Test loss': [],
@@ -463,3 +466,4 @@ def unison_shuffled_copies(a, b):
     assert len(a) == len(b)
     p = np.random.permutation(len(a))
     return a[p], b[p]
+'''

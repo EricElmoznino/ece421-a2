@@ -51,7 +51,7 @@ def relu(x):
 
 def softmax(x):
     x = np.exp(x)
-    return x / np.linalg.norm(x, axis=1, keepdims=True)
+    return x / (x.sum(axis=1, keepdims=True) + 1e-9)
 
 
 def linear(x, w, b):

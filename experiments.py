@@ -14,11 +14,13 @@ class Part1(unittest.TestCase):
         self.train_y, self.val_y, self.test_y = convert_one_hot(self.train_y, self.val_y, self.test_y)
 
     def test_3(self):
+        lr = 0.001
+        momentum = 0.9
         metric = {'Training loss': [], 'Validation loss': [], 'Test loss': [],
                   'Training accuracy': [], 'Validation accuracy': [], 'Test accuracy': []}
         epochs = 200
         net = Network(1000)
-        opt = Optimizer(0.1, 0.9, net)
+        opt = Optimizer(lr, momentum, net)
         for _ in tqdm(range(0, epochs + 1)):
             train_p = net.forward(self.train_x)
             net.backward(self.train_y, train_p)
@@ -33,10 +35,10 @@ class Part1(unittest.TestCase):
             metric['Test accuracy'].append(accuracy(self.test_y, test_p))
         for title in metric:
             line_plot(title, list(range(0, epochs + 1)),
-                      [metric[title]], ['learning rate = 0.1'],
+                      [metric[title]], ['learning rate=%g, momentum=%g' % (lr, momentum)],
                       'epochs', title.split(' ')[1],
                       os.path.join('results', '1_3', title + '.png'))
-        with open(os.path.join('results', '1_3', 'final_metrics_alpha=%g.txt' % 0.1), 'w') as f:
+        with open(os.path.join('results', '1_3', 'final_metrics_alpha=%g_momentum=%g.txt' % (lr, momentum)), 'w') as f:
             for title in metric:
                 f.write('%s: %g\n' % (title, metric[title][-1]))
 

@@ -54,7 +54,7 @@ def softmax(x):
     return x / np.linalg.norm(x, axis=1, keepdims=True)
 
 
-def compute_layer(x, w, b):
+def linear(x, w, b):
     return np.dot(x, w) + b
 
 
@@ -94,22 +94,57 @@ class Network:
         self.b_o = init_biases(10)
 
         self.w_h_grad = None
-        self.
+        self.b_h_grad = None
+        self.w_o_grad = None
+        self.b_o_grad = None
+
+        self.input = None
+        self.s_h = None
+        self.x_h = None
 
     def forward(self, input):
-        h = np.dot(input, self.w_h) + self.b_h
+        s_h = linear(input, self.w_h, self.b_h)
+        x_h = relu(s_h)
+        s_o = linear(x_h, self.w_o, self.b_o)
+        s_x = softmax(s_o)
+
+        self.input = input
+        self.s_h = s_h
+        self.x_h = x_h
+
+        return s_x
 
     def backward(self, target, prediction):
-        pass
+        s_o_grad = grad_ce(target, prediction)
+        self.w_o_grad = grad_w(s_o_grad, self.x_h)
+        self.b_o_grad = grad_b(s_o_grad)
+        x_h_grad = grad_x(s_o_grad, self.w_o)
+        s_h_grad = grad_relu(x_h_grad, self.s_h)
+        self.w_h_grad = grad_w(s_h_grad, self.input)
+        self.b_h_grad = grad_b(s_h_grad)
 
 
 class Optimizer:
 
     def __init__(self, lr, momentum, network):
-        pass
+        self.lr = lr
+        self.momentum = momentum
+        self.network = network
+
+        self.w_h_v = 0
+        self.b_h_v = 0
+        self.w_o_v = 0
+        self.b_o_v = 0
 
     def step(self):
-        pass
+        self.w_h_v = self.momentum * self.w_h_v + self.lr * self.network.w_h_grad
+        self.network.w_h -= self.w_h_v
+        self.b_h_v = self.momentum * self.b_h_v + self.lr * self.network.b_h_grad
+        self.network.b_h -= self.b_h_v
+        self.w_o_v = self.momentum * self.w_o_v + self.lr * self.network.w_o_grad
+        self.network.w_o -= self.w_o_v
+        self.b_o_v = self.momentum * self.b_o_v + self.lr * self.network.b_o_grad
+        self.network.b_o -= self.b_o_v
 
 
 def init_weights(shape):

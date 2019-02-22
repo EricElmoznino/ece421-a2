@@ -83,3 +83,40 @@ def grad_relu(delta, s):
     g = delta.copy()
     g[s < 0] = 0
     return g
+
+
+class Network:
+
+    def __init__(self, hidden_size):
+        self.w_h = init_weights((28 * 28, hidden_size))
+        self.b_h = init_biases(hidden_size)
+        self.w_o = init_weights((hidden_size, 10))
+        self.b_o = init_biases(10)
+
+        self.w_h_grad = None
+
+    def forward(self, input):
+        h = np.dot(input, self.w_h) + self.b_h
+
+    def backward(self, target, prediction):
+        pass
+
+
+class Optimizer:
+
+    def __init__(self, lr, momentum, network):
+        pass
+
+    def zero_grad(self):
+        pass
+
+    def step(self):
+        pass
+
+
+def init_weights(shape):
+    return np.random.normal(loc=0, scale=np.sqrt(2 / (shape[0] + shape[1])), size=shape)
+
+
+def init_biases(size):
+    return np.random.normal(loc=0, scale=np.sqrt(2 / size), size=(1, size))

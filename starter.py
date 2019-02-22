@@ -74,7 +74,7 @@ def grad_ce(target, prediction):
 
 
 def grad_w(delta, x):
-    return np.dot(delta.T, x)
+    return np.dot(delta.T, x).T
 
 
 def grad_b(delta):

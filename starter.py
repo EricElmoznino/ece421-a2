@@ -64,4 +64,22 @@ def average_ce(target, prediction):
 
 
 def grad_ce(target, prediction):
-    pass
+    return 1 / len(target) * (prediction - target)
+
+
+def grad_w(delta, x):
+    return np.dot(delta.T, x)
+
+
+def grad_b(delta):
+    return delta.sum(axis=0, keepdims=True)
+
+
+def grad_x(delta, w):
+    return np.dot(delta, w.T)
+
+
+def grad_relu(delta, s):
+    g = delta.copy()
+    g[s < 0] = 0
+    return g

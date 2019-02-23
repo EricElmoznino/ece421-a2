@@ -93,12 +93,19 @@ class Part2(unittest.TestCase):
         sess = tf.Session()
         sess.run(tf.global_variables_initializer())
         for _ in tqdm(range(0, epochs + 1)):
-            metric['Training loss'].append(sess.run(loss, feed_dict={input: self.train_x, targets: self.train_y, keep_prob: 1.0, reg: 0.0, lr: alpha}))
-            metric['Training accuracy'].append(accuracy(self.train_y, sess.run(predictions, feed_dict={keep_prob: 1.0, input: self.train_x})))
-            metric['Validation loss'].append(sess.run(loss, feed_dict={input: self.train_x, targets: self.train_y, keep_prob: 1.0, reg: 0.0, lr: alpha}))
-            metric['Validation accuracy'].append(accuracy(self.train_y, sess.run(predictions, feed_dict={keep_prob: 1.0, input: self.train_x})))
-            metric['Test loss'].append(sess.run(loss, feed_dict={input: self.train_x, targets: self.train_y,keep_prob: 1.0, reg: 0.0,  lr: alpha}))
-            metric['Test accuracy'].append(accuracy(self.train_y, sess.run(predictions, feed_dict={keep_prob: 1.0, input: self.train_x})))
+            metric['Training loss'].append(sess.run(loss, feed_dict={input: self.train_x, targets: self.train_y,
+                                                                     keep_prob: 1.0, reg: 0.0, lr: alpha}))
+            metric['Training accuracy'].append(
+                accuracy(self.train_y, sess.run(predictions, feed_dict={keep_prob: 1.0, input: self.train_x})))
+            metric['Validation loss'].append(sess.run(loss, feed_dict={input: self.valid_x, targets: self.valid_y,
+                                                                       keep_prob: 1.0, reg: 0.0, lr: alpha}))
+            metric['Validation accuracy'].append(
+                accuracy(self.valid_y, sess.run(predictions, feed_dict={keep_prob: 1.0, input: self.valid_x})))
+            metric['Test loss'].append(sess.run(loss,
+                                                feed_dict={input: self.test_x, targets: self.test_y, keep_prob: 1.0,
+                                                           reg: 0.0, lr: alpha}))
+            metric['Test accuracy'].append(
+                accuracy(self.test_y, sess.run(predictions, feed_dict={keep_prob: 1.0, input: self.test_x})))
             train_x, train_y = unison_shuffled_copies(self.train_x, self.train_y)
             for batch in range(0, self.train_x.shape[0] // batch_size):
                 _ = sess.run(optimizer_op, feed_dict={input: train_x[batch:batch + batch_size],
@@ -127,12 +134,19 @@ class Part2(unittest.TestCase):
             sess = tf.Session()
             sess.run(tf.global_variables_initializer())
             for _ in tqdm(range(0, epochs + 1)):
-                metric['Training loss'].append(sess.run(loss, feed_dict={input: self.train_x, targets: self.train_y, keep_prob: 1.0, reg: r, lr: alpha}))
-                metric['Training accuracy'].append(accuracy(self.train_y, sess.run(predictions, feed_dict={keep_prob: 1.0, input: self.train_x})))
-                metric['Validation loss'].append(sess.run(loss, feed_dict={input: self.train_x, targets: self.train_y, keep_prob: 1.0, reg: r, lr: alpha}))
-                metric['Validation accuracy'].append(accuracy(self.train_y, sess.run(predictions, feed_dict={keep_prob: 1.0, input: self.train_x})))
-                metric['Test loss'].append(sess.run(loss, feed_dict={input: self.train_x, targets: self.train_y,keep_prob: 1.0, reg: r,  lr: alpha}))
-                metric['Test accuracy'].append(accuracy(self.train_y, sess.run(predictions, feed_dict={keep_prob: 1.0, input: self.train_x})))
+                metric['Training loss'].append(sess.run(loss, feed_dict={input: self.train_x, targets: self.train_y,
+                                                                         keep_prob: 1.0, reg: 0.0, lr: alpha}))
+                metric['Training accuracy'].append(
+                    accuracy(self.train_y, sess.run(predictions, feed_dict={keep_prob: 1.0, input: self.train_x})))
+                metric['Validation loss'].append(sess.run(loss, feed_dict={input: self.valid_x, targets: self.valid_y,
+                                                                           keep_prob: 1.0, reg: 0.0, lr: alpha}))
+                metric['Validation accuracy'].append(
+                    accuracy(self.valid_y, sess.run(predictions, feed_dict={keep_prob: 1.0, input: self.valid_x})))
+                metric['Test loss'].append(sess.run(loss,
+                                                    feed_dict={input: self.test_x, targets: self.test_y, keep_prob: 1.0,
+                                                               reg: 0.0, lr: alpha}))
+                metric['Test accuracy'].append(
+                    accuracy(self.test_y, sess.run(predictions, feed_dict={keep_prob: 1.0, input: self.test_x})))
                 train_x, train_y = unison_shuffled_copies(self.train_x, self.train_y)
                 for batch in range(0, self.train_x.shape[0] // batch_size):
                     _ = sess.run(optimizer_op, feed_dict={input: train_x[batch:batch + batch_size],
@@ -162,17 +176,18 @@ class Part2(unittest.TestCase):
             sess.run(tf.global_variables_initializer())
             for _ in tqdm(range(0, epochs + 1)):
                 metric['Training loss'].append(sess.run(loss, feed_dict={input: self.train_x, targets: self.train_y,
-                                                                         keep_prob: d, reg: 0.0, lr: alpha}))
+                                                                         keep_prob: 1.0, reg: 0.0, lr: alpha}))
                 metric['Training accuracy'].append(
-                    accuracy(self.train_y, sess.run(predictions, feed_dict={keep_prob: d, input: self.train_x})))
-                metric['Validation loss'].append(sess.run(loss, feed_dict={input: self.train_x, targets: self.train_y,
-                                                                           keep_prob: d, reg: 0.0, lr: alpha}))
+                    accuracy(self.train_y, sess.run(predictions, feed_dict={keep_prob: 1.0, input: self.train_x})))
+                metric['Validation loss'].append(sess.run(loss, feed_dict={input: self.valid_x, targets: self.valid_y,
+                                                                           keep_prob: 1.0, reg: 0.0, lr: alpha}))
                 metric['Validation accuracy'].append(
-                    accuracy(self.train_y, sess.run(predictions, feed_dict={keep_prob: d, input: self.train_x})))
-                metric['Test loss'].append(sess.run(loss, feed_dict={input: self.train_x, targets: self.train_y,
-                                                                     keep_prob: d, reg: 0.0, lr: alpha}))
+                    accuracy(self.valid_y, sess.run(predictions, feed_dict={keep_prob: 1.0, input: self.valid_x})))
+                metric['Test loss'].append(sess.run(loss,
+                                                    feed_dict={input: self.test_x, targets: self.test_y, keep_prob: 1.0,
+                                                               reg: 0.0, lr: alpha}))
                 metric['Test accuracy'].append(
-                    accuracy(self.train_y, sess.run(predictions, feed_dict={keep_prob: d, input: self.train_x})))
+                    accuracy(self.test_y, sess.run(predictions, feed_dict={keep_prob: 1.0, input: self.test_x})))
                 train_x, train_y = unison_shuffled_copies(self.train_x, self.train_y)
                 for batch in range(0, self.train_x.shape[0] // batch_size):
                     _ = sess.run(optimizer_op, feed_dict={input: train_x[batch:batch + batch_size],

@@ -159,3 +159,42 @@ def init_weights(shape):
 
 def init_biases(size):
     return np.random.normal(loc=0, scale=np.sqrt(2 / size), size=(1, size))
+
+
+def tensorflow_net():
+    input = tf.placeholder(shape=[None, 28 * 28], dtype=tf.float32)
+    targets = tf.placeholder(shape=[None, 10], dtype=tf.float32)
+    keep_prob = tf.placeholder(dtype=tf.float32)
+    reg = tf.placeholder(dtype=tf.float32)
+    lr = tf.placeholder(dtype=tf.float32)
+
+    regularizer = tf.contrib.layers.l2_regularizer(scale=reg)
+    x = tf.reshape(input, [-1, 28, 28, 1])
+    x = tf.contrib.layers.conv2d(x, num_outputs=32, kernel_size=3, padding='same',
+                                 activation_fn=tf.nn.relu, normalizer_fn=tf.contrib.layers.batch_norm,
+                                 weights_initializer=tf.contrib.layers.xavier_initializer(),
+                                 biases_initializer=tf.contrib.layers.xavier_initializer(),
+                                 weights_regularizer=regularizer)
+    x = tf.contrib.layers.max_pool2d(x, kernel_size=2, stride=2, padding='same')
+    x = tf.reshape(x, [-1, 14 * 14 * 32])
+    x = tf.contrib.layers.fully_connected(x, num_outputs=784,
+                                          activation_fn=tf.nn.relu,
+                                          weights_initializer=tf.contrib.layers.xavier_initializer(),
+                                          biases_initializer=tf.contrib.layers.xavier_initializer(),
+                                          weights_regularizer=regularizer)
+    x = tf.nn.dropout(x, keep_prob=keep_prob)
+    x = tf.contrib.layers.fully_connected(x, num_outputs=10,
+                                          activation_fn=tf.nn.relu,
+                                          weights_initializer=tf.contrib.layers.xavier_initializer(),
+                                          biases_initializer=tf.contrib.layers.xavier_initializer(),
+                                          weights_regularizer=regularizer)
+
+    predictions = tf.nn.softmax(x)
+    loss = tf.losses.softmax_cross_entropy(targets, x)
+    l2_loss = tf.losses.get_regularization_loss()
+    loss += l2_loss
+
+    optimizer = tf.train.AdamOptimizer(learning_rate=lr)
+    optimizer_op = optimizer.minimize(loss)
+
+    return input, predictions, targets, loss, optimizer_op, lr, reg, keep_prob

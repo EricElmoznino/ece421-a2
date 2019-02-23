@@ -160,7 +160,7 @@ class Part2(unittest.TestCase):
         for r, m in zip(regs, metrics):
             with open(os.path.join('results', '2_3', 'final_metrics_reg=%g.txt' % r), 'w') as f:
                 for title in m:
-                    f.write('%s: %g\n' % (title, metric[title][-1]))
+                    f.write('%s: %g\n' % (title, m[title][-1]))
 
     def test_4(self):
         dropouts = [0.9, 0.75, 0.5]
@@ -201,4 +201,4 @@ class Part2(unittest.TestCase):
         for d, m in zip(dropouts, metrics):
             with open(os.path.join('results', '2_4', 'final_metrics_dropout=%g.txt' % d), 'w') as f:
                 for title in m:
-                    f.write('%s: %g\n' % (title, metric[title][-1]))
+                    f.write('%s: %g\n' % (title, m[title][-1]))

@@ -45,7 +45,7 @@ class Part1(unittest.TestCase):
     def test_4(self):
         hidden_units = [100, 500, 2000]
         metrics = [{'Training loss': [], 'Validation loss': [], 'Test loss': [],
-                  'Training accuracy': [], 'Validation accuracy': [], 'Test accuracy': []}
+                    'Training accuracy': [], 'Validation accuracy': [], 'Test accuracy': []}
                    for _ in hidden_units]
         epochs = 50
         lr = 0.001
@@ -74,6 +74,7 @@ class Part1(unittest.TestCase):
             with open(os.path.join('results', '1_4', 'hidden_units=%g.txt' % a), 'w') as f:
                 for title in m:
                     f.write('%s: %g\n' % (title, m[title][-1]))
+
 
 class Part2(unittest.TestCase):
 
@@ -109,8 +110,8 @@ class Part2(unittest.TestCase):
             train_x, train_y = unison_shuffle(self.train_x, self.train_y)
             for batch in range(0, self.train_x.shape[0] // batch_size):
                 _ = sess.run(optimizer_op, feed_dict={input: train_x[batch:batch + batch_size],
-                                                     targets: train_y[batch:batch + batch_size],
-                                                     reg: 0.0, lr: alpha, keep_prob: 1})
+                                                      targets: train_y[batch:batch + batch_size],
+                                                      reg: 0.0, lr: alpha, keep_prob: 1})
         for title in metric:
             line_plot(title, list(range(0, epochs + 1)),
                       [metric[title]], ['learning rate = %g' % alpha],
@@ -123,7 +124,7 @@ class Part2(unittest.TestCase):
     def test_3(self):
         regs = [0.01, 0.1, 0.5]
         metrics = [{'Training loss': [], 'Validation loss': [], 'Test loss': [],
-                  'Training accuracy': [], 'Validation accuracy': [], 'Test accuracy': []} for _ in regs]
+                    'Training accuracy': [], 'Validation accuracy': [], 'Test accuracy': []} for _ in regs]
         epochs = 50
         batch_size = 32
         alpha = 0.0001
@@ -150,8 +151,8 @@ class Part2(unittest.TestCase):
                 train_x, train_y = unison_shuffle(self.train_x, self.train_y)
                 for batch in range(0, self.train_x.shape[0] // batch_size):
                     _ = sess.run(optimizer_op, feed_dict={input: train_x[batch:batch + batch_size],
-                                                         targets: train_y[batch:batch + batch_size],
-                                                         reg: r, lr: alpha, keep_prob: 1.0})
+                                                          targets: train_y[batch:batch + batch_size],
+                                                          reg: r, lr: alpha, keep_prob: 1.0})
         for title in metrics[0]:
             line_plot(title, list(range(0, epochs + 1)),
                       [m[title] for m in metrics], ['regularizer = %g' % r for r in regs],

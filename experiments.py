@@ -97,10 +97,10 @@ class Part2(unittest.TestCase):
                                                                      keep_prob: 1.0, reg: 0.0, lr: alpha}))
             metric['Training accuracy'].append(
                 accuracy(self.train_y, sess.run(predictions, feed_dict={keep_prob: 1.0, input: self.train_x})))
-            metric['Validation loss'].append(sess.run(loss, feed_dict={input: self.valid_x, targets: self.valid_y,
+            metric['Validation loss'].append(sess.run(loss, feed_dict={input: self.val_x, targets: self.val_y,
                                                                        keep_prob: 1.0, reg: 0.0, lr: alpha}))
             metric['Validation accuracy'].append(
-                accuracy(self.valid_y, sess.run(predictions, feed_dict={keep_prob: 1.0, input: self.valid_x})))
+                accuracy(self.val_y, sess.run(predictions, feed_dict={keep_prob: 1.0, input: self.val_x})))
             metric['Test loss'].append(sess.run(loss,
                                                 feed_dict={input: self.test_x, targets: self.test_y, keep_prob: 1.0,
                                                            reg: 0.0, lr: alpha}))
@@ -138,10 +138,10 @@ class Part2(unittest.TestCase):
                                                                          keep_prob: 1.0, reg: 0.0, lr: alpha}))
                 metric['Training accuracy'].append(
                     accuracy(self.train_y, sess.run(predictions, feed_dict={keep_prob: 1.0, input: self.train_x})))
-                metric['Validation loss'].append(sess.run(loss, feed_dict={input: self.valid_x, targets: self.valid_y,
+                metric['Validation loss'].append(sess.run(loss, feed_dict={input: self.val_x, targets: self.val_y,
                                                                            keep_prob: 1.0, reg: 0.0, lr: alpha}))
                 metric['Validation accuracy'].append(
-                    accuracy(self.valid_y, sess.run(predictions, feed_dict={keep_prob: 1.0, input: self.valid_x})))
+                    accuracy(self.val_y, sess.run(predictions, feed_dict={keep_prob: 1.0, input: self.val_x})))
                 metric['Test loss'].append(sess.run(loss,
                                                     feed_dict={input: self.test_x, targets: self.test_y, keep_prob: 1.0,
                                                                reg: 0.0, lr: alpha}))
@@ -179,10 +179,10 @@ class Part2(unittest.TestCase):
                                                                          keep_prob: 1.0, reg: 0.0, lr: alpha}))
                 metric['Training accuracy'].append(
                     accuracy(self.train_y, sess.run(predictions, feed_dict={keep_prob: 1.0, input: self.train_x})))
-                metric['Validation loss'].append(sess.run(loss, feed_dict={input: self.valid_x, targets: self.valid_y,
+                metric['Validation loss'].append(sess.run(loss, feed_dict={input: self.val_x, targets: self.val_y,
                                                                            keep_prob: 1.0, reg: 0.0, lr: alpha}))
                 metric['Validation accuracy'].append(
-                    accuracy(self.valid_y, sess.run(predictions, feed_dict={keep_prob: 1.0, input: self.valid_x})))
+                    accuracy(self.val_y, sess.run(predictions, feed_dict={keep_prob: 1.0, input: self.val_x})))
                 metric['Test loss'].append(sess.run(loss,
                                                     feed_dict={input: self.test_x, targets: self.test_y, keep_prob: 1.0,
                                                                reg: 0.0, lr: alpha}))

@@ -47,7 +47,7 @@ class Part1(unittest.TestCase):
         metrics = [{'Training loss': [], 'Validation loss': [], 'Test loss': [],
                   'Training accuracy': [], 'Validation accuracy': [], 'Test accuracy': []}
                    for _ in hidden_units]
-        epochs = 200
+        epochs = 50
         lr = 0.001
         momentum = 0.9
         for (hidden_unit, metric) in zip(hidden_units, metrics):
@@ -67,7 +67,7 @@ class Part1(unittest.TestCase):
                 metric['Test accuracy'].append(accuracy(self.test_y, test_p))
         for title in metrics[0]:
             line_plot(title, list(range(0, epochs + 1)),
-                      [metric[title] for metric in metrics], ['hidden units=%g' % hidden_unit],
+                      [metric[title] for metric in metrics], ['hidden units=%g' % h for h in hidden_units],
                       'epochs', title.split(' ')[1],
                       os.path.join('results', '1_4', title + '.png'))
         for (a, m) in zip(hidden_units, metrics):
@@ -152,11 +152,10 @@ class Part2(unittest.TestCase):
         dropouts = [0.9, 0.75, 0.5]
         metrics = [{'Training loss': [], 'Validation loss': [], 'Test loss': [],
                     'Training accuracy': [], 'Validation accuracy': [], 'Test accuracy': []} for _ in dropouts]
-        epochs = 1
+        epochs = 50
         batch_size = 32
         alpha = 0.0001
         for (d, metric) in zip(dropouts, metrics):
-            print('Training with dropout=%g' % d)
             tf.reset_default_graph()
             input, predictions, targets, loss, optimizer_op, lr, reg, keep_prob = tensorflow_net()
             sess = tf.Session()

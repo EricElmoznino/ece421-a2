@@ -152,11 +152,11 @@ class Part2(unittest.TestCase):
         dropouts = [0.9, 0.75, 0.5]
         metrics = [{'Training loss': [], 'Validation loss': [], 'Test loss': [],
                     'Training accuracy': [], 'Validation accuracy': [], 'Test accuracy': []} for _ in dropouts]
-        epochs = 50
+        epochs = 1
         batch_size = 32
         alpha = 0.0001
         for (d, metric) in zip(dropouts, metrics):
-            print('Training with regularizer=%g' % d)
+            print('Training with dropout=%g' % d)
             tf.reset_default_graph()
             input, predictions, targets, loss, optimizer_op, lr, reg, keep_prob = tensorflow_net()
             sess = tf.Session()

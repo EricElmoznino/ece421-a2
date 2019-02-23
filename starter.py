@@ -36,7 +36,7 @@ def convert_one_hot(train_target, valid_target, test_target):
     return new_train, new_valid, new_test
 
 
-def shuffle(train_data, train_target):
+def unison_shuffle(train_data, train_target):
     np.random.seed(421)
     rand_indx = np.arange(len(train_data))
     target = train_target

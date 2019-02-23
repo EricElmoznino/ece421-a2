@@ -106,7 +106,7 @@ class Part2(unittest.TestCase):
                                                            reg: 0.0, lr: alpha}))
             metric['Test accuracy'].append(
                 accuracy(self.test_y, sess.run(predictions, feed_dict={keep_prob: 1.0, input: self.test_x})))
-            train_x, train_y = unison_shuffled_copies(self.train_x, self.train_y)
+            train_x, train_y = unison_shuffle(self.train_x, self.train_y)
             for batch in range(0, self.train_x.shape[0] // batch_size):
                 _ = sess.run(optimizer_op, feed_dict={input: train_x[batch:batch + batch_size],
                                                      targets: train_y[batch:batch + batch_size],
@@ -147,7 +147,7 @@ class Part2(unittest.TestCase):
                                                                reg: 0.0, lr: alpha}))
                 metric['Test accuracy'].append(
                     accuracy(self.test_y, sess.run(predictions, feed_dict={keep_prob: 1.0, input: self.test_x})))
-                train_x, train_y = unison_shuffled_copies(self.train_x, self.train_y)
+                train_x, train_y = unison_shuffle(self.train_x, self.train_y)
                 for batch in range(0, self.train_x.shape[0] // batch_size):
                     _ = sess.run(optimizer_op, feed_dict={input: train_x[batch:batch + batch_size],
                                                          targets: train_y[batch:batch + batch_size],
@@ -188,7 +188,7 @@ class Part2(unittest.TestCase):
                                                                reg: 0.0, lr: alpha}))
                 metric['Test accuracy'].append(
                     accuracy(self.test_y, sess.run(predictions, feed_dict={keep_prob: 1.0, input: self.test_x})))
-                train_x, train_y = unison_shuffled_copies(self.train_x, self.train_y)
+                train_x, train_y = unison_shuffle(self.train_x, self.train_y)
                 for batch in range(0, self.train_x.shape[0] // batch_size):
                     _ = sess.run(optimizer_op, feed_dict={input: train_x[batch:batch + batch_size],
                                                           targets: train_y[batch:batch + batch_size],
@@ -202,8 +202,3 @@ class Part2(unittest.TestCase):
             with open(os.path.join('results', '2_4', 'final_metrics_dropout=%g.txt' % d), 'w') as f:
                 for title in m:
                     f.write('%s: %g\n' % (title, metric[title][-1]))
-
-def unison_shuffled_copies(a, b):
-    assert len(a) == len(b)
-    p = np.random.permutation(len(a))
-    return a[p], b[p]
